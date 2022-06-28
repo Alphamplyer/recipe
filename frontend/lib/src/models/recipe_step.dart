@@ -12,6 +12,20 @@ class RecipeStep {
     required this.content,
   });
 
+  RecipeStep copyWith({
+    int? id,
+    int? recipeId,
+    int? number,
+    String? content,
+  }) {
+    return RecipeStep(
+      id: id ?? this.id,
+      recipeId: recipeId ?? this.recipeId,
+      number: number ?? this.number,
+      content: content ?? this.content,
+    );
+  }
+
   factory RecipeStep.fromJson(Map<String, dynamic> json) {
     return RecipeStep(
       number: json['number'],
