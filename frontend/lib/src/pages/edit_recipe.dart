@@ -4,8 +4,8 @@ import 'package:frontend/src/components/button/empty_add_button.dart';
 import 'package:frontend/src/components/edit_recipe/editable_ingredients.dart';
 import 'package:frontend/src/components/edit_recipe/editable_recipe_header.dart';
 import 'package:frontend/src/components/edit_recipe/editable_step.dart';
+import 'package:frontend/src/components/edit_recipe/editable_tools.dart';
 import 'package:frontend/src/components/recipe/recipe_description.dart';
-import 'package:frontend/src/components/recipe/recipe_tools.dart';
 import 'package:frontend/src/components/text/section_title.dart';
 import 'package:frontend/src/models/recipe.dart';
 import 'package:frontend/src/shared/const.dart';
@@ -59,7 +59,11 @@ class _EditRecipePageState extends State<EditRecipePage> {
                   onAdd: (ingredient) => _editRecipeState.addIngredient(ingredient),
                 ),
                 const SectionTitle(title: 'Tools'),
-                RecipeTools(tools: _editRecipeState.tools),
+                EditableTools(
+                  tools: _editRecipeState.tools,
+                  onDelete: (index) => _editRecipeState.deleteTool(index),
+                  onAdd: (tool) => _editRecipeState.addTool(tool),
+                ),
                 const SectionTitle(title: 'Steps'),
                 ...List.generate(_editRecipeState.steps.length, (int index) {
                   return EditableStep(
@@ -70,6 +74,13 @@ class _EditRecipePageState extends State<EditRecipePage> {
                 }),
                 EmptyAddButton(onPressed: () => _editRecipeState.addStep('')),
               ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(kSpace * 2),
+            child: ElevatedButton(
+              onPressed: () => Navigator.pop(context, _editRecipeState),
+              child: const Text('Save'),
             ),
           )
         ],
