@@ -4,14 +4,19 @@ import 'package:frontend/src/shared/theme.dart';
 
 class RecipeStepContentFormField extends StatelessWidget {
   final TextEditingController controller;
+  final FocusNode? focusNode;
   
-  const RecipeStepContentFormField({Key? key, required this.controller}) : super(key: key);
+  const RecipeStepContentFormField({
+    Key? key, 
+    required this.controller, 
+    this.focusNode
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
-      autofocus: true,
+      focusNode: focusNode,
       decoration: CustomTheme.onCardInputDecorationTheme(context),
       validator: (value) {
         if (value == null || value.isEmpty) {

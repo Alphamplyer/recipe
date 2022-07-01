@@ -37,53 +37,57 @@ class _EditRecipePageState extends State<EditRecipePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
-        children: [
-          EditableRecipeHeader(
-            name: _editRecipeState.name,
-            imageUrl: _editRecipeState.imageUrl,
-            onSaveName: (name) => _editRecipeState.updateName(name),
-          ),
-          RecipeDescription(
-            content: _editRecipeState.description,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(kSpace * 2),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,              
-              children: [
-                const SectionTitle(title: 'Ingredients'),
-                EditableIngredients(
-                  ingredients: _editRecipeState.ingredients,
-                  onDelete: (index) => _editRecipeState.delteIngredient(index),
-                  onAdd: (ingredient) => _editRecipeState.addIngredient(ingredient),
-                ),
-                const SectionTitle(title: 'Tools'),
-                EditableTools(
-                  tools: _editRecipeState.tools,
-                  onDelete: (index) => _editRecipeState.deleteTool(index),
-                  onAdd: (tool) => _editRecipeState.addTool(tool),
-                ),
-                const SectionTitle(title: 'Steps'),
-                ...List.generate(_editRecipeState.steps.length, (int index) {
-                  return EditableStep(
-                    step: _editRecipeState.steps[index],
-                    onDelete: () => _editRecipeState.deleteStep(index),
-                    onSave: (content) => _editRecipeState.updateStep(index, content),
-                  );
-                }),
-                EmptyAddButton(onPressed: () => _editRecipeState.addStep('')),
-              ],
+      body: GestureDetector(
+        onTap:() => FocusManager.instance.primaryFocus?.unfocus(),
+        child: ListView(
+          children: [
+            EditableRecipeHeader(
+              name: _editRecipeState.name,
+              imageUrl: _editRecipeState.imageUrl,
+              onSaveName: (name) => _editRecipeState.updateName(name),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(kSpace * 2),
-            child: ElevatedButton(
-              onPressed: () => Navigator.pop(context, _editRecipeState),
-              child: const Text('Save'),
+            RecipeDescription(
+              content: _editRecipeState.description,
             ),
-          )
-        ],
+            Padding(
+              padding: const EdgeInsets.all(kSpace * 2),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,              
+                children: [
+                  const SectionTitle(title: 'Ingredients'),
+                  EditableIngredients(
+                    ingredients: _editRecipeState.ingredients,
+                    onDelete: (index) => _editRecipeState.delteIngredient(index),
+                    onAdd: (ingredient) => _editRecipeState.addIngredient(ingredient),
+                  ),
+                  const SectionTitle(title: 'Tools'),
+                  EditableTools(
+                    tools: _editRecipeState.tools,
+                    onDelete: (index) => _editRecipeState.deleteTool(index),
+                    onAdd: (tool) => _editRecipeState.addTool(tool),
+                  ),
+                  const SectionTitle(title: 'Steps'),
+                  ...List.generate(_editRecipeState.steps.length, (int index) {
+                    return EditableStep(
+                      key: UniqueKey(),
+                      step: _editRecipeState.steps[index],
+                      onDelete: () => _editRecipeState.deleteStep(index),
+                      onSave: (content) => _editRecipeState.updateStep(index, content),
+                    );
+                  }),
+                  EmptyAddButton(onPressed: () => _editRecipeState.addStep('')),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(kSpace * 2),
+              child: ElevatedButton(
+                onPressed: () => Navigator.pop(context, _editRecipeState),
+                child: const Text('Save'),
+              ),
+            )
+          ],
+        ),
       )
     );
   }

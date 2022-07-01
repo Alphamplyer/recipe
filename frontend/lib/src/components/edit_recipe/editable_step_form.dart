@@ -9,12 +9,17 @@ class EditableStepForm extends StatefulWidget {
   final RecipeStep step;
   final Function(String)? onSave;
   final Function()? onDelete;
+  final TextEditingController? contentController;
+  final FocusNode? focusNode;
+
 
   const EditableStepForm({
     Key? key, 
     required this.step, 
     this.onSave, 
-    this.onDelete
+    this.onDelete,
+    this.contentController, 
+    this.focusNode
   }) : super(key: key);
 
   @override
@@ -27,7 +32,7 @@ class _EditableStepFormState extends State<EditableStepForm> {
 
   @override
   void initState() {
-    _contentController = TextEditingController(text: widget.step.content);
+    _contentController = widget.contentController ?? TextEditingController(text: widget.step.content);
     super.initState();
   }
   
@@ -43,12 +48,26 @@ class _EditableStepFormState extends State<EditableStepForm> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(
-                '${widget.step.number}',
-                style: Theme.of(context).textTheme.headline5!.copyWith(color: Theme.of(context).colorScheme.secondary),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '${widget.step.number}',
+                    style: Theme.of(context).textTheme.headline5!.copyWith(color: Theme.of(context).colorScheme.secondary),
+                  ),
+                  Icon(
+                    Icons.edit,
+                    size: 12.0,
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                ],
               ),
               const SizedBox(height: kSpace),
-              RecipeStepContentFormField(controller: _contentController),
+              RecipeStepContentFormField(
+                controller: _contentController, 
+                focusNode: widget.focusNode,
+              ),
               const SizedBox(height: kSpace),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,

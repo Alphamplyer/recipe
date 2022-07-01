@@ -5,8 +5,9 @@ import 'package:frontend/src/shared/theme.dart';
 
 class EditableRecipeNameFormField extends StatelessWidget {
   final TextEditingController controller;
+  final Function(String?)? onValidate;
 
-  const EditableRecipeNameFormField({Key? key, required this.controller}) : super(key: key);
+  const EditableRecipeNameFormField({Key? key, required this.controller, this.onValidate}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,15 +15,10 @@ class EditableRecipeNameFormField extends StatelessWidget {
       controller: controller,
       autofocus: true,
       decoration: CustomTheme.onCardInputDecorationThemeWithoutCounterText(context),
+      keyboardAppearance: Theme.of(context).brightness,
       maxLength: kMaxRecipeNameLength,
       validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'A name is required';
-        } else if (value.length > 128) {
-          return 'Name must be less than 128 characters';
-        } else if (value.length < 3) {
-          return 'Name must be at least 3 characters';
-        }
+        onValidate?.call(value);
         return null;
       },
     );

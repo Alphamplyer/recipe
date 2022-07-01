@@ -15,11 +15,13 @@ class EditableRecipeHeader extends StatefulWidget {
 }
 
 class _EditableRecipeHeaderState extends State<EditableRecipeHeader> {
+  late TextEditingController _nameController;
   late bool _isEditingName;
 
   @override
   void initState() {
     _isEditingName = false;
+    _nameController = TextEditingController(text: widget.name);
     super.initState();
   }
   
@@ -77,18 +79,35 @@ class _EditableRecipeHeaderState extends State<EditableRecipeHeader> {
               ),
               Padding(
                 padding: const EdgeInsets.all(kSpace * 2),
-                child: _isEditingName 
-                  ? EditableRecipeNameForm(
-                    name: widget.name,
-                    onSave: (name) {
-                      widget.onSaveName?.call(name);
+                child: Focus(
+                  onFocusChange: (hasFocus) {
+                    if (!hasFocus) {
                       toggleNameEdit();
-                    },
-                  ) 
-                  : GestureDetector(
-                    onTap: toggleNameEdit,
-                    child: Text(widget.name, style: const TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold))
-                  )
+                    }
+                  },
+                  child: _isEditingName 
+                    ? EditableRecipeNameForm(
+                        nameController: _nameController,
+                        name: widget.name,
+                        onSave: (name) {
+                          widget.onSaveName?.call(name);
+                          toggleNameEdit();
+                        },
+                        onCancel: () {
+                          toggleNameEdit();
+                        }
+                      ) 
+                    : GestureDetector(
+                        onTap: toggleNameEdit,
+                        child: Row(
+                          children: [
+                            Text(widget.name, style: const TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold)),
+                            const SizedBox(width: kSpace),
+                            const Icon(Icons.edit, size: 26.0),
+                          ],
+                        )
+                      )
+                ) 
               ),
             ],
           ),

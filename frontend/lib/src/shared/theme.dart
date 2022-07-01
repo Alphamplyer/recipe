@@ -48,6 +48,11 @@ class CustomTheme {
   static onCardInputDecorationThemeWithoutCounterText(BuildContext context) => InputDecoration(
     fillColor: Theme.of(context).canvasColor,
     filled: true,
+    errorStyle: TextStyle(
+      color: Theme.of(context).colorScheme.error,
+      fontWeight: FontWeight.bold,
+      fontSize: 14,
+    ),
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(kRadius),
       borderSide: BorderSide.none,
