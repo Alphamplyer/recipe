@@ -1,5 +1,9 @@
 /data/
 
+# environment variables
+**/development.env
+**/production.env
+
 # compiled output
 /dist
 /node_modules
