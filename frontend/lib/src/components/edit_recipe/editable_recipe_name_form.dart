@@ -89,11 +89,8 @@ class _EditableRecipeNameFormState extends State<EditableRecipeNameForm> {
                     icon: Icons.done,
                     size: 60,
                     onPressed: () {
-                      print("test1");
                       _formKey.currentState!.validate();
-                      print("test2");
                       if (_errorMessage.isEmpty) {
-                        print("test");
                         widget.onSave?.call(_nameController.text);
                       }
                     },
