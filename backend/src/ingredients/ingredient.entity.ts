@@ -1,8 +1,8 @@
-import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
-import { SeasonalPeaks } from './seasonal_peaks';
+import { RecipeIngredient } from 'src/recipes/recipe_ingrendient.entity';
+import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
 
 @Entity("ingredients")
-export class User {
+export class Ingredient {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -12,8 +12,11 @@ export class User {
   @Column({ type: 'varchar', length: 255, name: 'image_url', nullable: false })
   imageUrl: string;
 
-  @Column({ type: "number", array: true, length: 12, name: 'seasonal_peaks', default: [SeasonalPeaks.None] })
-  seasonalPeaks: number[];
+  @Column({ type: 'varchar', length: 26, name: 'seasonal_peaks', default: '0' })
+  seasonalPeaks: string;
+
+  @OneToMany(() => RecipeIngredient, (recipeIngredient) => recipeIngredient.ingredient)
+  recipes: RecipeIngredient[];
 
   @CreateDateColumn({ type: 'timestamptz', name: 'created_at' })
   createdAt: Date;

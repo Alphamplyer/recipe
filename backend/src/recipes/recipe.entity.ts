@@ -1,4 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Step } from 'src/steps/steps.entity';
+import { Tool } from 'src/tools/tool.entity';
+import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany, ManyToMany, JoinTable, ManyToOne } from 'typeorm';
+import { RecipeIngredient } from './recipe_ingrendient.entity';
 
 @Entity("recipes")
 export class Recipe {
@@ -10,6 +13,29 @@ export class Recipe {
 
   @Column({ type: 'varchar', length: 255 })
   description: string;
+
+  @Column({ type: 'varchar', length: 255, name: 'image_url' })
+  imageUrl: string;
+
+  @OneToMany(() => RecipeIngredient, (recipeIngredient) => recipeIngredient.recipe, { 
+    eager: true,
+    cascade: true,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
+  })
+  ingredients: RecipeIngredient[];
+
+  @ManyToMany(() => Tool, (tool) => tool.recipes, { eager: true })
+  @JoinTable({ name: 'recipe_tools' })
+  tools: Tool[];
+
+  @OneToMany(() => Step, (step) => step.recipe, { 
+    eager: true,
+    cascade: true,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
+  })
+  steps: Step[];
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;

@@ -14,12 +14,6 @@ export class User {
   @Column({ name: 'password_hash', nullable: false })
   passwordHash: string;
 
-  @Column({ name: 'accept_terms', nullable: false })
-  acceptTerms: boolean;
-
-  @Column({ name: 'accept_privacy', nullable: false })
-  acceptPrivacy: boolean;
-
   @Column({ name: 'is_active', default: false })
   isActive: boolean;
 
